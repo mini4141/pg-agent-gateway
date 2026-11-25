@@ -1,12 +1,52 @@
 #!/usr/bin/env bash
-# Capture proof for a phase. Usage: scripts/capture-proof.sh phase1
+# Capture proof for a phase. Usage: scripts/capture-proof.sh phase1|phase2
+# phase2: cloud contract tests, console screenshot, CloudWatch widget images, X-Ray summary, resource list (run after deploy.sh).
 # phase1: runs a noisy-neighbour drill against the local stack and records screenshots, logs and reports.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export MSYS_NO_PATHCONV=1
 
-PHASE="${1:?usage: capture-proof.sh phase1}"
-[ "$PHASE" = "phase1" ] || { echo "phase2 proof is captured by scripts/deploy.sh" >&2; exit 2; }
+PHASE="${1:?usage: capture-proof.sh phase1|phase2}"
+
+
+if [ "$PHASE" = "phase2" ]; then
+  source scripts/lib/aws-env.sh
+  C=proof/phase2-cloud; mkdir -p "$C/screenshots" "$C/logs" "$C/tests/cloud-contract"
+  ALB=$(cat .local/cloud-alb); PREFIX=$(cat .local/cloud-key-prefix)
+  ABS="$(pwd -W 2>/dev/null || pwd)"
+
+  echo "== contract tests against the ALB"
+  GATEWAY_URL="http://$ALB" SEED_KEY_PREFIX="$PREFIX" JUNIT_OUT="$ABS/$C/tests/cloud-contract/junit.xml"     pnpm --filter tests exec vitest run 2>&1 | redact | tee "$C/tests/cloud-contract/vitest.log"
+
+  echo "== 01 cloud console"
+  (cd tests && GATEWAY_URL="http://$ALB" SEED_KEY_PREFIX="$PREFIX" node capture.mjs console "../$C/screenshots/01-cloud-console.png")
+
+  widget() { # widget <out.png> <json>
+    aws cloudwatch get-metric-widget-image --metric-widget "$2" --output text --query MetricWidgetImage | base64 -d > "$1"
+  }
+  echo "== 02/03 CloudWatch widgets"
+  widget "$C/screenshots/02-cloudwatch-latency.png" '{"title":"Gateway latency p95 (ms) by track","region":"ap-southeast-2","period":60,"start":"-PT3H","end":"PT0H","width":1000,"height":400,
+    "metrics":[["PgAgentGateway","LatencyMs","Track","stable",{"stat":"p95","label":"stable p95"}],["PgAgentGateway","LatencyMs","Track","canary",{"stat":"p95","label":"canary p95"}]]}'
+  widget "$C/screenshots/03-cloudwatch-5xx-during-rollback.png" '{"title":"5xx per minute by track (canary rollback)","region":"ap-southeast-2","period":60,"start":"-PT3H","end":"PT0H","width":1000,"height":400,
+    "metrics":[["PgAgentGateway","Errors5xx","Track","canary",{"stat":"Sum","label":"canary 5xx"}],["PgAgentGateway","Errors5xx","Track","stable",{"stat":"Sum","label":"stable 5xx"}]]}'
+
+  echo "== X-Ray summary"
+  aws xray get-trace-summaries --start-time "$(date -u -d '3 hours ago' +%s)" --end-time "$(date -u +%s)"     --query 'TraceSummaries[:20].{Id:Id,Duration:Duration,ResponseTime:ResponseTime,Http:Http.HttpURL,Status:Http.HttpStatus}' --output json | redact > "$C/logs/xray-trace-summary.json"
+
+  echo "== resources"
+  {
+    echo "# Deployed AWS resources (Project=pg-agent-gateway), $(date -u +%FT%TZ)"
+    aws cloudformation describe-stacks --query "Stacks[?starts_with(StackName,'Pgagw')].{Stack:StackName,Status:StackStatus}" --output table
+    aws cloudformation describe-stacks --stack-name PgagwService --query 'Stacks[0].Outputs[].[OutputKey,OutputValue]' --output text
+    echo; echo "# Tagged resources"
+    aws resourcegroupstaggingapi get-resources --tag-filters Key=Project,Values=pg-agent-gateway --query 'ResourceTagMappingList[].ResourceARN' --output text | tr '	' '
+' | sort
+    echo; echo "# ECS services"
+    aws ecs describe-services --cluster "$CLUSTER" --services gateway-stable gateway-canary redis --query 'services[].{name:serviceName,desired:desiredCount,running:runningCount,taskDef:taskDefinition}' --output table
+  } | redact > "$C/resources.txt"
+  echo "phase2 proof captured under $C"
+  exit 0
+fi
 
 DIR=proof/phase1-local
 SHOTS="$DIR/screenshots"; LOGS="$DIR/logs"; TESTS="$DIR/tests"

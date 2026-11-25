@@ -16,7 +16,7 @@ jobs:
       - run: pnpm build
       - run: pnpm lint
       - run: pnpm --filter infra synth
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm --filter tests exec playwright install --with-deps chromium
       - run: scripts/test-all.sh
         env:
           SERVICES: postgres redis gateway
