@@ -1,0 +1,6 @@
+{
+  "name": "infra",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "tsc --noEmit", "synth": "cdk synth --quiet" }
+}

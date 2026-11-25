@@ -1,0 +1,19 @@
+:root { font-family: system-ui, sans-serif; color: #1c2430; background: #f6f8fa; }
+body { margin: 0; }
+header { display: flex; gap: 1.2rem; align-items: center; padding: 0.7rem 1.2rem; background: #0b1f33; color: #fff; }
+header a { color: #9ec7f5; text-decoration: none; }
+header a.active { color: #fff; border-bottom: 2px solid #4da3ff; }
+header .right { margin-left: auto; font-size: 0.8rem; }
+header input { width: 4rem; margin-left: 0.4rem; }
+main { padding: 1.2rem; max-width: 1100px; margin: 0 auto; }
+.toolbar { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.6rem; }
+button { background: #1f6feb; color: #fff; border: 0; border-radius: 4px; padding: 0.4rem 1.2rem; cursor: pointer; }
+button:disabled { opacity: 0.5; }
+textarea { width: 100%; font-family: ui-monospace, Consolas, monospace; font-size: 0.9rem; box-sizing: border-box; }
+table { border-collapse: collapse; width: 100%; background: #fff; font-size: 0.85rem; margin-top: 0.6rem; }
+th, td { border: 1px solid #d8dee4; padding: 0.3rem 0.6rem; text-align: left; }
+th { background: #eef2f6; }
+tr.hot td { background: #fff1e5; }
+.err { color: #b42318; }
+.note { color: #57606a; font-size: 0.85rem; }
+small { font-weight: normal; color: #57606a; }

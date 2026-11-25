@@ -1,0 +1,10 @@
+route:
+  receiver: webhook-logger
+  group_by: [alertname, tenant]
+  group_wait: 5s
+  group_interval: 10s
+  repeat_interval: 1h
+receivers:
+  - name: webhook-logger
+    webhook_configs:
+      - url: http://webhook-logger:9095/alerts

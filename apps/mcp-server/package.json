@@ -1,0 +1,6 @@
+{
+  "name": "mcp-server",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "tsc --noEmit", "demo": "tsx scripts/demo-client.ts" }
+}

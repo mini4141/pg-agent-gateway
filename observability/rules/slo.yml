@@ -1,0 +1,45 @@
+# SLOs: availability >= 99.5% (5xx count as bad; 429 is intentional shedding and does not)
+#       p95 latency < 300 ms for console callers.
+groups:
+  - name: gateway-slo-recording
+    rules:
+      - record: gw:requests:rate1m
+        expr: sum(rate(gw_requests_total[1m]))
+      - record: gw:errors:rate1m
+        expr: sum(rate(gw_requests_total{code=~"5.."}[1m]))
+      - record: gw:error_ratio:rate5m
+        expr: sum(rate(gw_requests_total{code=~"5.."}[5m])) / sum(rate(gw_requests_total[5m]))
+      - record: gw:error_ratio:rate30m
+        expr: sum(rate(gw_requests_total{code=~"5.."}[30m])) / sum(rate(gw_requests_total[30m]))
+      - record: gw:error_ratio:rate1h
+        expr: sum(rate(gw_requests_total{code=~"5.."}[1h])) / sum(rate(gw_requests_total[1h]))
+      - record: gw:error_ratio:rate6h
+        expr: sum(rate(gw_requests_total{code=~"5.."}[6h])) / sum(rate(gw_requests_total[6h]))
+      - record: tenant:gw_latency_p95:5m
+        expr: histogram_quantile(0.95, sum by (tenant, le) (rate(gw_request_duration_seconds_bucket[5m])))
+      - record: gw:console_latency_p95:5m
+        expr: histogram_quantile(0.95, sum by (le) (rate(gw_request_duration_seconds_bucket{caller_type="console"}[5m])))
+  - name: gateway-slo-alerts
+    rules:
+      # Multi-window multi-burn-rate (error budget 0.5%): fast burn 14.4x, slow burn 6x.
+      - alert: AvailabilityFastBurn
+        expr: gw:error_ratio:rate5m > (14.4 * 0.005) and gw:error_ratio:rate1h > (14.4 * 0.005)
+        for: 1m
+        labels: { severity: page }
+        annotations: { summary: "Error budget burning 14.4x (5m and 1h windows)", runbook: docs/runbooks/high-error-rate.md }
+      - alert: AvailabilitySlowBurn
+        expr: gw:error_ratio:rate30m > (6 * 0.005) and gw:error_ratio:rate6h > (6 * 0.005)
+        for: 5m
+        labels: { severity: ticket }
+        annotations: { summary: "Error budget burning 6x (30m and 6h windows)", runbook: docs/runbooks/high-error-rate.md }
+      - alert: ConsoleLatencySLOBreach
+        expr: gw:console_latency_p95:5m > 0.3
+        for: 5m
+        labels: { severity: ticket }
+        annotations: { summary: "console p95 latency above 300 ms", runbook: docs/runbooks/slow-queries.md }
+      # Fairness signal: a tenant is being throttled hard. Not an SLO breach (429 is intended), but on-call should know.
+      - alert: TenantThrottled
+        expr: sum by (tenant) (rate(gw_ratelimited_total[30s])) > 20
+        for: 15s
+        labels: { severity: info }
+        annotations: { summary: "Tenant is being rate limited heavily", runbook: docs/runbooks/noisy-neighbour.md }

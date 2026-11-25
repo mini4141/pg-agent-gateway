@@ -1,0 +1,67 @@
+name: pgagw
+services:
+  postgres:
+    image: postgres:17.6
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres-dev-only}
+    command: ["postgres", "-c", "max_connections=200"]
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      retries: 20
+  redis:
+    image: redis:7.4-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      retries: 20
+  gateway:
+    build: .
+    image: pg-agent-gateway:local
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      PORT: 8080
+      CONTROL_DATABASE_URL: postgres://gateway:${CONTROL_DB_PASSWORD:-control-dev-only}@postgres:5432/control
+      REDIS_URL: redis://redis:6379
+      MASTER_KEY_FILE: /run/secrets/dev-master.key
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      MAX_RESPONSE_BYTES: ${MAX_RESPONSE_BYTES:-10485760}
+      FAULT: ${FAULT:-}
+    volumes:
+      - ./.local/dev-master.key:/run/secrets/dev-master.key:ro
+    ports: ["${GATEWAY_PORT:-8080}:8080"]
+    mem_limit: 1g
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./observability/rules:/etc/prometheus/rules:ro
+    ports: ["9090:9090"]
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    volumes: ["./observability/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro"]
+    ports: ["9093:9093"]
+  webhook-logger:
+    image: node:24.12-alpine
+    command: ["node", "/app/webhook-logger.js"]
+    volumes: ["./observability/webhook-logger.js:/app/webhook-logger.js:ro"]
+  grafana:
+    image: grafana/grafana:12.1.0
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/gateway-slo.json
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports: ["3000:3000"]
+  jaeger:
+    image: jaegertracing/jaeger:2.9.0
+    ports: ["16686:16686", "4318:4318"]
+volumes:
+  pgdata:
