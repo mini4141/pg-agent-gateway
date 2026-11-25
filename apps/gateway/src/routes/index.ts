@@ -4,7 +4,7 @@ import type pg from 'pg';
 import { GatewayError } from '../errors.js';
 import { registry } from '../obs/metrics.js';
 import { snapshot } from '../obs/stats.js';
-import { authenticateCaller, runQuery } from '../pipeline/execute.js';
+import { admit, authenticateCaller, runQuery } from '../pipeline/execute.js';
 import { getBranch, putBranch } from '../secrets/branchStore.js';
 import { config } from '../config.js';
 
@@ -46,6 +46,7 @@ export async function queryRoutes(app: FastifyInstance) {
   app.post<{ Params: { tenant: string }; Querystring: { multi?: 'last' | 'all' }; Body: { sql: string; params?: unknown[]; maxRows?: number; timeoutMs?: number; stream?: boolean } }>(
     '/v1/tenants/:tenant/query',
     {
+      onRequest: async (req) => admit(req, (req.params as { tenant: string }).tenant),
       schema: {
         tags: ['query'],
         summary: 'Run SQL for a tenant',
@@ -56,14 +57,17 @@ export async function queryRoutes(app: FastifyInstance) {
         body: queryBody,
       },
     },
-    (req, reply) => runQuery(req, reply, req.params.tenant, { ...req.body, multi: req.query.multi }),
+    (req, reply) => runQuery(req, reply, { ...req.body, multi: req.query.multi }),
   );
 
   app.get<{ Params: { tenant: string } }>(
     '/v1/tenants/:tenant/tables',
-    { schema: { tags: ['query'], summary: 'List tables of a tenant database', headers } },
+    {
+      onRequest: async (req) => admit(req, (req.params as { tenant: string }).tenant),
+      schema: { tags: ['query'], summary: 'List tables of a tenant database', headers },
+    },
     (req, reply) =>
-      runQuery(req, reply, req.params.tenant, {
+      runQuery(req, reply, {
         sql: "select table_name, table_type from information_schema.tables where table_schema = 'public' order by table_name",
       }),
   );

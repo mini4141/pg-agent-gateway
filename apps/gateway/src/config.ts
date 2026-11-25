@@ -20,6 +20,7 @@ export const config = {
   fault: env.FAULT ?? '',
   track: env.GATEWAY_TRACK ?? 'local',
   emf: env.EMF_ENABLED === 'true',
+  traceSampleRatio: env.TRACE_SAMPLE_RATIO ? Number(env.TRACE_SAMPLE_RATIO) : 0.1,
   otlpEndpoint: env.OTEL_EXPORTER_OTLP_ENDPOINT ?? '',
   staticDir: env.STATIC_DIR ?? 'public',
   logLevel: env.LOG_LEVEL ?? 'info',

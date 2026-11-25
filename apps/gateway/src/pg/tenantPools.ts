@@ -51,12 +51,15 @@ export async function acquire(pool: pg.Pool): Promise<pg.PoolClient> {
   return pool.connect();
 }
 
-/** Cancel a running backend over a one-off connection, so a saturated pool cannot block the cancel. */
-export async function cancelBackend(tenant: Tenant, mode: Mode, pid: number): Promise<void> {
+/**
+ * Cancel a running backend over a one-off connection, so a saturated pool cannot block the cancel.
+ * Only cancels while the backend is still running the tagged statement, so a late cancel is a no-op.
+ */
+export async function cancelBackend(tenant: Tenant, mode: Mode, pid: number, tag: string): Promise<void> {
   const c = new pg.Client(await connInfo(tenant, mode));
   await c.connect();
   try {
-    await c.query('select pg_cancel_backend($1)', [pid]);
+    await c.query("select pg_cancel_backend(pid) from pg_stat_activity where pid = $1 and state = 'active' and query like $2", [pid, `%${tag.trim()}%`]);
   } finally {
     await c.end();
   }

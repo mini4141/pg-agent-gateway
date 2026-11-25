@@ -2,5 +2,17 @@
   "name": "agent-sim",
   "private": true,
   "type": "module",
-  "scripts": { "build": "tsc --noEmit", "sim": "tsx src/cli.ts" }
+  "scripts": {
+    "build": "tsc --noEmit",
+    "sim": "tsx src/cli.ts"
+  },
+  "dependencies": {
+    "autocannon": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/autocannon": "^7.12.7",
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3"
+  }
 }

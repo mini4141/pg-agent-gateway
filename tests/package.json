@@ -2,5 +2,13 @@
   "name": "tests",
   "private": true,
   "type": "module",
-  "scripts": { "build": "tsc --noEmit" }
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
+    "typescript": "~5.9.3",
+    "vitest": "^5.1.1"
+  }
 }

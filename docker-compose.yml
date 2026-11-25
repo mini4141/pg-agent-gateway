@@ -63,5 +63,11 @@ services:
   jaeger:
     image: jaegertracing/jaeger:2.9.0
     ports: ["16686:16686", "4318:4318"]
+  agent-sim:
+    profiles: ["tools"]
+    build: { context: ., target: agent-sim }
+    image: pg-agent-gateway-agent-sim:local
+    depends_on: [gateway]
+    volumes: ["./proof:/proof"]
 volumes:
   pgdata:

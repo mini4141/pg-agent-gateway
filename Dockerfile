@@ -15,6 +15,17 @@ COPY apps/console apps/console
 RUN pnpm --filter gateway build && pnpm --filter console build
 RUN pnpm --filter gateway deploy --prod /out
 
+FROM build AS sim-build
+RUN pnpm install --frozen-lockfile --filter agent-sim...
+COPY tools/agent-sim tools/agent-sim
+RUN pnpm --filter agent-sim deploy /sim
+
+# Load generator, run on the compose network so Docker Desktop's port forwarding does not distort latency.
+FROM node:24.12-alpine AS agent-sim
+WORKDIR /sim
+COPY --from=sim-build /sim .
+ENTRYPOINT ["node_modules/.bin/tsx", "src/cli.ts"]
+
 FROM node:24.12-alpine
 ENV NODE_ENV=production
 WORKDIR /app

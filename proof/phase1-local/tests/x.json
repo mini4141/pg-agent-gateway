@@ -1,0 +1,55 @@
+{
+  "startedAt": "2026-11-25T07:54:56.488Z",
+  "options": {
+    "url": "http://gateway:8080",
+    "duration": "12s",
+    "background-tenant": "tenant_b",
+    "out": "/proof/phase1-local/tests/x.json",
+    "prefix": "dev",
+    "tenant": "tenant_a",
+    "rps": "300",
+    "pattern": "bursty",
+    "background-rps": "20",
+    "assert": false,
+    "p95-slo-ms": "300",
+    "durationSeconds": 12
+  },
+  "noisy": {
+    "tenant": "tenant_a",
+    "requests": 3754,
+    "status": {
+      "200": 385,
+      "429": 3362,
+      "503": 7
+    },
+    "ok": 385,
+    "throttled": 3369,
+    "errorRate": 0,
+    "latencyMs": {
+      "p50": 142.422746,
+      "p95": 583.387806,
+      "p99": 1965.787684
+    }
+  },
+  "quiet": {
+    "tenant": "tenant_b",
+    "requests": 173,
+    "status": {
+      "200": 173
+    },
+    "ok": 173,
+    "throttled": 0,
+    "errorRate": 0,
+    "latencyMs": {
+      "p50": 138.421929,
+      "p95": 2829.682458,
+      "p99": 2955.968609
+    }
+  },
+  "sloP95Ms": 300,
+  "checks": {
+    "noisyTenantThrottled": true,
+    "quietTenantP95UnderSlo": false,
+    "quietTenantErrorsUnder1Pct": true
+  }
+}

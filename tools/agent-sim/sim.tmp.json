@@ -1,0 +1,38 @@
+{
+  "startedAt": "2026-11-25T07:36:51.355Z",
+  "options": {
+    "tenant": "tenant_a",
+    "rps": "300",
+    "pattern": "bursty",
+    "duration": "14s",
+    "out": "sim.tmp.json",
+    "url": "http://localhost:8080",
+    "prefix": "dev",
+    "background-rps": "20",
+    "assert": false,
+    "p95-slo-ms": "300",
+    "durationSeconds": 14
+  },
+  "noisy": {
+    "tenant": "tenant_a",
+    "requests": 4567,
+    "status": {
+      "200": 462,
+      "429": 4105
+    },
+    "ok": 462,
+    "throttled": 4105,
+    "errorRate": 0,
+    "latencyMs": {
+      "p50": 106.8268,
+      "p95": 812.363,
+      "p99": 1857.7547
+    }
+  },
+  "sloP95Ms": 300,
+  "checks": {
+    "noisyTenantThrottled": true,
+    "quietTenantP95UnderSlo": null,
+    "quietTenantErrorsUnder1Pct": null
+  }
+}

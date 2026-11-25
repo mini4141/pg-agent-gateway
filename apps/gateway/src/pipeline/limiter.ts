@@ -36,11 +36,15 @@ end
 return 0
 `;
 
-export const redis = new Redis(config.redisUrl, { maxRetriesPerRequest: 2, lazyConnect: false });
+export const redis = new Redis(config.redisUrl, { maxRetriesPerRequest: 2, enableAutoPipelining: true });
+redis.defineCommand('tokenBucket', { numberOfKeys: 1, lua: TOKEN_BUCKET_LUA }); // EVALSHA, not EVAL with the script body
+redis.defineCommand('semAcquire', { numberOfKeys: 1, lua: SEM_ACQUIRE_LUA });
+type Scripts = { tokenBucket(...a: (string | number)[]): Promise<[number, number]>; semAcquire(...a: (string | number)[]): Promise<number> };
+const scripts = redis as unknown as Scripts;
 redis.on('error', () => undefined);
 
 export async function tokenBucket(key: string, capacity: number, ratePerSec: number, cost = 1) {
-  const [allowed, retryMs] = (await redis.eval(TOKEN_BUCKET_LUA, 1, key, capacity, ratePerSec, cost)) as [number, number];
+  const [allowed, retryMs] = await scripts.tokenBucket(key, capacity, ratePerSec, cost);
   return { allowed: allowed === 1, retryAfterMs: retryMs };
 }
 
@@ -51,7 +55,7 @@ const waiting = new Map<string, number>();
 export async function acquireSlot(tenant: string, limit: number): Promise<() => Promise<void>> {
   const key = `sem:${tenant}`;
   const token = randomUUID();
-  const tryOnce = async () => (await redis.eval(SEM_ACQUIRE_LUA, 1, key, limit, HOLD_TTL_MS, token)) === 1;
+  const tryOnce = async () => (await scripts.semAcquire(key, limit, HOLD_TTL_MS, token)) === 1;
   let released = false;
   const release = async () => {
     if (released) return;
@@ -68,7 +72,7 @@ export async function acquireSlot(tenant: string, limit: number): Promise<() => 
   try {
     const deadline = Date.now() + config.semaphoreWaitMs;
     while (Date.now() < deadline) {
-      await new Promise((r) => setTimeout(r, 25));
+      await new Promise((r) => setTimeout(r, 10));
       if (await tryOnce()) return release;
     }
   } finally {

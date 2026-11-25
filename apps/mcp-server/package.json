@@ -2,5 +2,17 @@
   "name": "mcp-server",
   "private": true,
   "type": "module",
-  "scripts": { "build": "tsc --noEmit", "demo": "tsx scripts/demo-client.ts" }
+  "scripts": {
+    "build": "tsc --noEmit",
+    "demo": "tsx scripts/demo-client.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3"
+  }
 }

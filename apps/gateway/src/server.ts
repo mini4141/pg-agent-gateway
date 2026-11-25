@@ -8,7 +8,7 @@ import underPressure from '@fastify/under-pressure';
 import type { Span } from '@opentelemetry/api';
 import Fastify from 'fastify';
 import { config } from './config.js';
-import { control } from './db/control.js';
+import { control, type Caller, type Tenant } from './db/control.js';
 import { GatewayError, toErrorBody } from './errors.js';
 import { requestDuration, requestsTotal } from './obs/metrics.js';
 import { record } from './obs/stats.js';
@@ -21,6 +21,7 @@ interface Ctx {
   callerType: string;
   span: Span;
   tracked: boolean;
+  admitted?: { caller: Caller; tenant: Tenant };
 }
 declare module 'fastify' {
   interface FastifyRequest {
@@ -97,7 +98,8 @@ export async function buildServer() {
     requestsTotal.inc({ tenant, caller_type: callerType, code: String(reply.statusCode) });
     requestDuration.observe({ tenant, caller_type: callerType }, ms / 1000);
     record(tenant, ms, reply.statusCode);
-    req.log.info({ tenant, callerType, statusCode: reply.statusCode, durationMs: Math.round(ms) }, 'request');
+    // 429s are shedding by design and already counted in gw_ratelimited_total: log them at debug to keep floods cheap.
+    req.log[reply.statusCode === 429 ? 'debug' : 'info']({ tenant, callerType, statusCode: reply.statusCode, durationMs: Math.round(ms) }, 'request');
     if (config.emf) {
       // CloudWatch Embedded Metric Format: one stdout line becomes three metrics, dimensioned by track.
       process.stdout.write(

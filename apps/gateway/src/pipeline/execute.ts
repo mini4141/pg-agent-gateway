@@ -40,16 +40,17 @@ async function authorize(req: FastifyRequest, tenantId: string) {
   return { caller, tenant };
 }
 
-/** Runs a query through stages 2-4: token bucket, concurrency semaphore, pool with bounded queue. */
-export async function runQuery(req: FastifyRequest, reply: FastifyReply, tenantId: string, input: QueryInput) {
+/**
+ * Stages 1-2 (auth, token bucket) run as an onRequest hook, before the body is parsed or validated,
+ * so a flooding tenant's rejected requests cost as little as possible.
+ */
+export async function admit(req: FastifyRequest, tenantId: string): Promise<void> {
   const root = req.ctx.span;
   const { caller, tenant } = await span(root, 'auth', () => authorize(req, tenantId));
   const type = caller.type as CallerType;
   req.ctx.tenant = tenant.id;
   req.ctx.callerType = type;
-  const limits = callerLimits[type];
-  const maxRows = clamp(input.maxRows, input.stream ? limits.hardMaxRows : limits.defaultMaxRows, limits.hardMaxRows);
-  const timeoutMs = clamp(input.timeoutMs, limits.defaultTimeoutMs, limits.hardTimeoutMs);
+  req.ctx.admitted = { caller, tenant };
 
   await span(root, 'ratelimit', async () => {
     const r = await tokenBucket(`rl:${tenant.id}:${type}`, tenant.rateLimitRps, tenant.rateLimitRps);
@@ -60,6 +61,16 @@ export async function runQuery(req: FastifyRequest, reply: FastifyReply, tenantI
       });
     }
   });
+}
+
+/** Stages 3-4: per-tenant concurrency semaphore, then the tenant pool with a bounded queue. */
+export async function runQuery(req: FastifyRequest, reply: FastifyReply, input: QueryInput) {
+  const root = req.ctx.span;
+  const { caller, tenant } = req.ctx.admitted!;
+  const type = caller.type as CallerType;
+  const limits = callerLimits[type];
+  const maxRows = clamp(input.maxRows, input.stream ? limits.hardMaxRows : limits.defaultMaxRows, limits.hardMaxRows);
+  const timeoutMs = clamp(input.timeoutMs, limits.defaultTimeoutMs, limits.hardTimeoutMs);
 
   const release = await span(root, 'semaphore_wait', () => acquireSlot(tenant.id, tenant.maxConcurrency)).catch((e) => {
     ratelimitedTotal.inc({ tenant: tenant.id, caller_type: type, stage: 'semaphore' });
@@ -93,13 +104,15 @@ async function checkout(run: Run) {
   const client = await span(req.ctx.span, 'pool_acquire', () => acquire(pool));
   const pid = (client as unknown as { processID: number }).processID;
   const state = { timedOut: false, done: false, cancelled: false };
+  // Unique marker prepended to the SQL so a late cancel can never hit the connection's next query.
+  const tag = `/* gw:${req.id} */ `;
 
   const cancel = (reason: 'timeout' | 'client_disconnect') => {
     if (state.done || state.cancelled) return;
     state.cancelled = true;
     cancelledTotal.inc({ tenant: tenant.id, reason });
     req.log.info({ tenant: tenant.id, backendPid: pid, reason }, 'pg_cancel_backend');
-    cancelBackend(tenant, mode, pid).catch((err) => req.log.warn({ err: err.message }, 'cancel failed'));
+    cancelBackend(tenant, mode, pid, tag).catch((err) => req.log.warn({ err: err.message }, 'cancel failed'));
   };
   const timer = setTimeout(() => {
     state.timedOut = true;
@@ -122,7 +135,7 @@ async function checkout(run: Run) {
     // Backstop only: the watchdog above cancels at timeoutMs via pg_cancel_backend.
     await client.query(`SET LOCAL statement_timeout = ${timeoutMs + 2000}`);
   };
-  return { client, state, begin, finish };
+  return { client, state, begin, finish, tag };
 }
 
 const fieldsOf = (r: pg.QueryResult) => r.fields.map((f) => ({ name: f.name, dataTypeID: f.dataTypeID }));
@@ -130,12 +143,12 @@ const fieldsOf = (r: pg.QueryResult) => r.fields.map((f) => ({ name: f.name, dat
 async function jsonQuery(run: Run, release: () => Promise<void>) {
   const { req, reply, input, maxRows } = run;
   const started = performance.now();
-  const { client, state, begin, finish } = await checkout(run);
+  const { client, state, begin, finish, tag } = await checkout(run);
   let broken = false;
   try {
     const results = await span(req.ctx.span, 'query', async () => {
       await begin();
-      const r = input.params ? await client.query(input.sql, input.params) : await client.query(input.sql);
+      const r = input.params ? await client.query(tag + input.sql, input.params) : await client.query(tag + input.sql);
       await client.query('COMMIT');
       return Array.isArray(r) ? r : [r];
     });
@@ -165,17 +178,18 @@ async function jsonQuery(run: Run, release: () => Promise<void>) {
 /** NDJSON: one line per row, then a `{_meta:{rowCount,truncated}}` trailer. Backpressure comes from Readable.from. */
 async function streamQuery(run: Run, release: () => Promise<void>) {
   const { req, reply, input, maxRows } = run;
-  const { client, state, begin, finish } = await checkout(run);
+  const { client, state, begin, finish, tag } = await checkout(run);
 
   async function* lines(): AsyncGenerator<string> {
     let started = false;
     let broken = false;
     try {
       await begin();
-      const qs = client.query(new QueryStream(input.sql, input.params ?? [], { batchSize: 500 }));
+      const qs = client.query(new QueryStream(tag + input.sql, input.params ?? [], { batchSize: 500 }));
       let count = 0;
       let truncated = false;
       for await (const row of qs) {
+        if (state.timedOut) throw new GatewayError('STATEMENT_TIMEOUT', 'stream exceeded its timeout', { sqlState: '57014' });
         if (count >= maxRows) {
           truncated = true;
           broken = true; // connection holds an open cursor: discard it
