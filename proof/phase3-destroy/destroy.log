@@ -1,0 +1,31 @@
+arn:aws:iam::<ACCOUNT_ID>:user/pg-agent-gateway-deployer
+== 1. canary weight to 0, scale services to 0
+18:40:31 ALB weights: stable=100 canary=0
+scaled gateway-canary to 0
+scaled gateway-stable to 0
+scaled redis to 0
+== 2. empty ECR repositories
+emptied pg-agent-gateway
+== 3. delete secrets the gateway created at runtime (pgagw/branches/*)
+deleted secret pgagw/branches/demo/main-T8bdKO
+== 4. cdk destroy --all --force
+AI agent detected
+PgagwService: destroying... [1/3]
+✅  PgagwService: destroyed
+PgagwData: destroying... [2/3]
+✅  PgagwData: destroyed
+PgagwBase: destroying... [3/3]
+✅  PgagwBase: destroyed
+== 5. toolkit stack CDKToolkit-pg-agent-gateway and its staging bucket
+deleted 3 versions from cdk-pgagw-assets-<ACCOUNT_ID>-ap-southeast-2
+toolkit stack deleted
+{
+    "BucketArn": "arn:aws:s3:::cdk-pgagw-assets-<ACCOUNT_ID>-ap-southeast-2",
+    "BucketRegion": "ap-southeast-2",
+    "AccessPointAlias": false
+}
+deleted bucket cdk-pgagw-assets-<ACCOUNT_ID>-ap-southeast-2
+== 6. KMS key
+The key is scheduled for deletion by cdk destroy (7-day minimum window): it stays in PendingDeletion and is not billed once scheduled.
+alias removed; see verify-destroyed.sh for the key state
+destroy finished

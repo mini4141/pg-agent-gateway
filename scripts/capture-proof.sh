@@ -22,7 +22,7 @@ if [ "$PHASE" = "phase2" ]; then
   (cd tests && GATEWAY_URL="http://$ALB" SEED_KEY_PREFIX="$PREFIX" node capture.mjs console "../$C/screenshots/01-cloud-console.png")
 
   widget() { # widget <out.png> <json>
-    aws cloudwatch get-metric-widget-image --metric-widget "$2" --output text --query MetricWidgetImage | base64 -d > "$1"
+    aws cloudwatch get-metric-widget-image --metric-widget "$2" --output text --query MetricWidgetImage | tr -d '[:space:]' | base64 -d > "$1"
   }
   echo "== 02/03 CloudWatch widgets"
   widget "$C/screenshots/02-cloudwatch-latency.png" '{"title":"Gateway latency p95 (ms) by track","region":"ap-southeast-2","period":60,"start":"-PT3H","end":"PT0H","width":1000,"height":400,

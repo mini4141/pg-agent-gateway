@@ -15,6 +15,9 @@ ACCOUNT=$(aws sts get-caller-identity --query Account --output text | tr -d '\r'
 [ -f .local/cloud-key-prefix ] || echo "k$(node -e "process.stdout.write(require('node:crypto').randomBytes(5).toString('hex'))")" > .local/cloud-key-prefix
 PREFIX=$(cat .local/cloud-key-prefix)
 
+# First ECS use in an account can race the service-linked role: make sure it exists (idempotent).
+aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com >/dev/null 2>&1 || true
+
 cd infra
 {
   echo "== cdk bootstrap (qualifier $QUALIFIER, toolkit stack $TOOLKIT_STACK)"

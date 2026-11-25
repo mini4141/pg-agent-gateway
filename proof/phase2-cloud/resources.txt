@@ -1,0 +1,85 @@
+# Deployed AWS resources (Project=pg-agent-gateway), 2026-11-25T18:39:50Z
+-------------------------------------
+|          DescribeStacks           |
++---------------+-------------------+
+|     Stack     |      Status       |
++---------------+-------------------+
+|  PgagwService |  CREATE_COMPLETE  |
+|  PgagwData    |  CREATE_COMPLETE  |
+|  PgagwBase    |  CREATE_COMPLETE  |
++---------------+-------------------+
+ListenerArn	arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:listener/app/PgagwS-Routi-Y1LkkSVE9rMS/32462b5da653d47d/6abed5897431c347
+InitTaskDefFamily	gateway-init-db
+KmsKeyId	ebfaacc2-bd26-420e-acb6-5e49a02c74f2
+DbEndpoint	pgagwdata-db5d02a0a9-a3g2uyk4kbvu.cvc0ewa0kt4y.ap-southeast-2.rds.amazonaws.com
+StableTgArn	arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:targetgroup/PgagwS-Routi-KEKDYLRN9ISH/42708676b5ba3b17
+AlbDns	PgagwS-Routi-Y1LkkSVE9rMS-457652525.ap-southeast-2.elb.amazonaws.com
+PublicSubnets	subnet-0db669a36fd29354f,subnet-02e599d041707fee1
+ClusterName	pgagw
+CanaryTgArn	arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:targetgroup/PgagwS-Routi-NUUYHBIXEQ9S/7093fd639353898f
+RepoUri	<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/pg-agent-gateway
+AppSecurityGroup	sg-04f2fb55cb4a18c7a
+
+# Tagged resources
+arn:aws:cloudformation:ap-southeast-2:<ACCOUNT_ID>:stack/CDKToolkit-pg-agent-gateway/60f553e0-e8f8-11f1-b6d1-062351bd51df
+arn:aws:cloudformation:ap-southeast-2:<ACCOUNT_ID>:stack/PgagwBase/b5575910-e8f8-11f1-ab39-02ffef0814c7
+arn:aws:cloudformation:ap-southeast-2:<ACCOUNT_ID>:stack/PgagwData/223fe6f0-e8f9-11f1-9cd9-06023ac2e917
+arn:aws:cloudformation:ap-southeast-2:<ACCOUNT_ID>:stack/PgagwService/aa807790-e8fa-11f1-9af6-06fff00df2f7
+arn:aws:cloudwatch:ap-southeast-2:<ACCOUNT_ID>:alarm:canary-5xx
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:internet-gateway/igw-0c6620c231a68526b
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-073fd19b775856b86
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-0b78a053fb52c2158
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-0c9a9d1529e44bef7
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-0dca00026ee171c76
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-0383e60688640f99d
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-04f2fb55cb4a18c7a
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-0f9065bf0796cca0d
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-000c4703bf28af2cd
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-02e599d041707fee1
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0a1778172fa5b5b45
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0db669a36fd29354f
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:vpc/vpc-0b4bbae77a27350ba
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/cdk-pgagw-container-assets-<ACCOUNT_ID>-ap-southeast-2
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/pg-agent-gateway
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:cluster/pgagw
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:service/pgagw/gateway-canary
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:service/pgagw/gateway-stable
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:service/pgagw/redis
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/PgagwServiceRedisTd755894CF:1
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/PgagwServiceRedisTd755894CF:2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-canary:1
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-canary:2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-init-db:1
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-init-db:2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-stable:1
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-stable:2
+arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:listener/app/PgagwS-Routi-Y1LkkSVE9rMS/32462b5da653d47d/6abed5897431c347
+arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:loadbalancer/app/PgagwS-Routi-Y1LkkSVE9rMS/32462b5da653d47d
+arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:targetgroup/PgagwS-Routi-KEKDYLRN9ISH/42708676b5ba3b17
+arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:targetgroup/PgagwS-Routi-NUUYHBIXEQ9S/7093fd639353898f
+arn:aws:kms:ap-southeast-2:<ACCOUNT_ID>:key/ebfaacc2-bd26-420e-acb6-5e49a02c74f2
+arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/pgagw/adotcanary
+arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/pgagw/adotstable
+arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/pgagw/gatewaycanary
+arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/pgagw/gatewaystable
+arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/pgagw/init
+arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/pgagw/redis
+arn:aws:rds:ap-southeast-2:<ACCOUNT_ID>:db:pgagwdata-db5d02a0a9-a3g2uyk4kbvu
+arn:aws:rds:ap-southeast-2:<ACCOUNT_ID>:subgrp:pgagwdata-dbsubnetgroup6f6c177a-obbjyh354ikb
+arn:aws:s3:::cdk-pgagw-assets-<ACCOUNT_ID>-ap-southeast-2
+arn:aws:secretsmanager:ap-southeast-2:<ACCOUNT_ID>:secret:ControlPasswordF01957DD-bDbM1bdkJ3k4-hfFtj7
+arn:aws:secretsmanager:ap-southeast-2:<ACCOUNT_ID>:secret:PgagwDataDbSecretCD75EE733f-UJUzce5bfq4s-6nHAYb
+arn:aws:secretsmanager:ap-southeast-2:<ACCOUNT_ID>:secret:pgagw/branches/demo/main-T8bdKO
+arn:aws:servicediscovery:ap-southeast-2:<ACCOUNT_ID>:namespace/ns-q2hqfq2xibzespan
+arn:aws:ssm:ap-southeast-2:<ACCOUNT_ID>:parameter/cdk-bootstrap/pgagw/version
+
+# ECS services
+-----------------------------------------------------------------------------------------------------------------------------------
+|                                                        DescribeServices                                                         |
++---------+-----------------+----------+------------------------------------------------------------------------------------------+
+| desired |      name       | running  |                                         taskDef                                          |
++---------+-----------------+----------+------------------------------------------------------------------------------------------+
+|  1      |  gateway-stable |  1       |  arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-stable:3                |
+|  1      |  gateway-canary |  1       |  arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-stable:3                |
+|  1      |  redis          |  1       |  arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/PgagwServiceRedisTd755894CF:2   |
++---------+-----------------+----------+------------------------------------------------------------------------------------------+

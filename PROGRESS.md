@@ -5,9 +5,9 @@ Resume from the first unticked item. Phases: 0 scaffold → 1 local → 2 AWS �
 ## Phase status
 - [x] Phase 0 scaffold
 - [x] Phase 1 local
-- [ ] Phase 2 AWS showcase
-- [ ] Phase 3 destroy
-- [ ] Phase 4 write-up
+- [x] Phase 2 AWS showcase
+- [x] Phase 3 destroy
+- [x] Phase 4 write-up
 
 ## Coverage matrix (SPECS §2)
 - [x] Run SQL against customers' Postgres for dashboard, MCP and agents (F1–F4)
@@ -33,8 +33,8 @@ Resume from the first unticked item. Phases: 0 scaffold → 1 local → 2 AWS �
 - [x] React 19 + Vite console
 - [x] Branch config endpoint + envelope encryption (local AES-GCM; AWS Secrets Manager + KMS)
 - [x] Vitest unit + contract, Playwright, load smoke
-- [ ] AWS: ECS Fargate stable + canary + Redis, ALB weighted TGs, RDS, Secrets Manager, KMS, CloudWatch, X-Ray/ADOT, ECR
-- [ ] AWS CDK v2 + GitHub Actions
+- [x] AWS: ECS Fargate stable + canary + Redis, ALB weighted TGs, RDS, Secrets Manager, KMS, CloudWatch, X-Ray/ADOT, ECR
+- [x] AWS CDK v2 + GitHub Actions
 
 ## Phase 1 (SPECS §9)
 - [x] `tests/`: Vitest JUnit, Playwright report, `agent-sim-report.json`
@@ -49,35 +49,36 @@ Resume from the first unticked item. Phases: 0 scaffold → 1 local → 2 AWS �
 - [x] `docs/postmortems/…-noisy-neighbour.md` written from the drill
 - [x] 3 runbooks in `docs/runbooks/`
 - [x] `docs/CONTRACT.md` + one contract test per behaviour
-- [x] `scripts/test-all.sh` green; CI green on `main` (verify after push); `proof/README.md` complete
+- [x] `scripts/test-all.sh` green; CI green on `main` ; `proof/README.md` complete
 
 ## Phase 2 (SPECS §10)
-- [ ] `logs/canary-promote.log`
-- [ ] `logs/canary-rollback.log`
-- [ ] `logs/cdk-deploy.log` (redacted)
-- [ ] `resources.txt`
-- [ ] `screenshots/01-cloud-console.png`
-- [ ] `screenshots/02-cloudwatch-latency.png`
-- [ ] `screenshots/03-cloudwatch-5xx-during-rollback.png`
-- [ ] `logs/xray-trace-summary.json`
-- [ ] `tests/cloud-contract/`
+- [x] `logs/canary-promote.log`
+- [x] `logs/canary-rollback.log`
+- [x] `logs/cdk-deploy.log` (redacted)
+- [x] `resources.txt`
+- [x] `screenshots/01-cloud-console.png`
+- [x] `screenshots/02-cloudwatch-latency.png`
+- [x] `screenshots/03-cloudwatch-5xx-during-rollback.png`
+- [x] `logs/xray-trace-summary.json`
+- [x] `tests/cloud-contract/`
 
 ## Phase 3 (SPECS §11)
-- [ ] `cdk destroy --all --force`
-- [ ] CDKToolkit-pg-agent-gateway and its bucket deleted
-- [ ] KMS key scheduled for deletion (PendingDeletion)
-- [ ] `proof/phase3-destroy/verify-destroyed.txt` shows nothing billable
+- [x] `cdk destroy --all --force`
+- [x] CDKToolkit-pg-agent-gateway and its bucket deleted
+- [x] KMS key scheduled for deletion (PendingDeletion)
+- [x] `proof/phase3-destroy/verify-destroyed.txt` shows nothing billable
 
 ## Phase 4
-- [ ] `docs/PORTFOLIO.md`
-- [ ] `README.md` final; everything committed and pushed
+- [x] `docs/PORTFOLIO.md`
+- [x] `README.md` final; everything committed and pushed
 
 ## Definition of done (CLAUDE §12)
-- [ ] Every stack item used in running code
-- [ ] Phase 1 proof complete; tests green locally and in CI
-- [ ] Phase 2 proof complete
-- [ ] Phase 3 destroyed and verified
-- [ ] PORTFOLIO.md and README.md written, pushed
+- [x] Every stack item used in running code
+- [x] Phase 1 proof complete; tests green locally and in CI
+- [x] Phase 2 proof complete
+- [x] Phase 3 destroyed and verified
+- [x] PORTFOLIO.md and README.md written, pushed
 
 ## Log
 - 2026-11-25 Phase 0 started.
+- 2026-11-26 Phases 2-4 complete: canary promotion + automatic rollback proven on AWS, stack destroyed, verify-destroyed passes (KMS key PendingDeletion until 7-day window ends).

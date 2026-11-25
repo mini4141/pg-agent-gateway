@@ -1,0 +1,24 @@
+
+ RUN  v5.1.1 C:/Users/ThinkPad/Pictures/mmvie-v2/reqs/4-pg-agent-gateway/tests
+
+ ✓ contract/contract.test.ts (12 tests) 13411ms
+   ✓ CONTRACT.md (12)
+     ✓ transactions: BEGIN ... COMMIT in one request is committed 2374ms
+     ✓ multi-statement: last result by default, all with ?multi=all 916ms
+     ✓ timeout: 408 STATEMENT_TIMEOUT and the query is cancelled server-side 2149ms
+     ✓ truncation: truncated=true past maxRows 514ms
+     ✓ streaming: NDJSON rows then a _meta trailer 520ms
+     ✓ read-only agents: a write returns 403 READ_ONLY_VIOLATION 502ms
+     ✓ agent limits: maxRows is clamped to the agent hard limit 518ms
+     ✓ errors: SQL errors use the documented shape with a requestId 398ms
+     ✓ auth: missing key is 401, key for another tenant is 403 825ms
+     ✓ rate limit: a burst beyond the tenant limit gets 429 with Retry-After 2343ms
+     ✓ branch config: round trip, platform-worker only 1452ms
+     ✓ readiness and OpenAPI: /readyz is ready, /docs/json is OpenAPI 3.1 894ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  01:37:45
+   Duration  13.96s (tests 99%)
+
+JUNIT report written to C:/Users/ThinkPad/Pictures/mmvie-v2/reqs/4-pg-agent-gateway/proof/phase2-cloud/tests/cloud-contract/junit.xml

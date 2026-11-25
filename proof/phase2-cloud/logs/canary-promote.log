@@ -1,0 +1,46 @@
+18:11:17 canary rollout of tag 'good' started (bake 180s per step)
+18:11:30 canary service updated to good; waiting for it to become stable
+18:14:37 canary healthy
+18:14:48 ALB weights: stable=90 canary=10
+18:15:06 step 10%: alarm canary-5xx = OK
+18:15:24 step 10%: alarm canary-5xx = OK
+18:15:42 step 10%: alarm canary-5xx = OK
+18:16:00 step 10%: alarm canary-5xx = OK
+18:16:18 step 10%: alarm canary-5xx = OK
+18:16:36 step 10%: alarm canary-5xx = OK
+18:16:54 step 10%: alarm canary-5xx = OK
+18:17:12 step 10%: alarm canary-5xx = OK
+18:17:30 step 10%: alarm canary-5xx = OK
+18:17:48 step 10%: alarm canary-5xx = OK
+traffic done: {"200":3116}
+18:17:54 step 10% passed
+18:18:05 ALB weights: stable=50 canary=50
+18:18:23 step 50%: alarm canary-5xx = OK
+18:18:41 step 50%: alarm canary-5xx = OK
+18:18:59 step 50%: alarm canary-5xx = OK
+18:19:17 step 50%: alarm canary-5xx = OK
+18:19:35 step 50%: alarm canary-5xx = OK
+18:19:53 step 50%: alarm canary-5xx = OK
+18:20:11 step 50%: alarm canary-5xx = OK
+18:20:29 step 50%: alarm canary-5xx = OK
+18:20:47 step 50%: alarm canary-5xx = OK
+18:21:04 step 50%: alarm canary-5xx = OK
+traffic done: {"200":3100}
+18:21:22 step 50%: alarm canary-5xx = OK
+18:21:25 step 50% passed
+18:21:36 ALB weights: stable=0 canary=100
+18:21:54 step 100%: alarm canary-5xx = OK
+18:22:12 step 100%: alarm canary-5xx = OK
+18:22:30 step 100%: alarm canary-5xx = OK
+18:22:48 step 100%: alarm canary-5xx = OK
+18:23:06 step 100%: alarm canary-5xx = OK
+18:23:23 step 100%: alarm canary-5xx = OK
+18:23:41 step 100%: alarm canary-5xx = OK
+18:23:59 step 100%: alarm canary-5xx = OK
+18:24:17 step 100%: alarm canary-5xx = OK
+18:24:35 step 100%: alarm canary-5xx = OK
+traffic done: {"200":3077}
+18:24:53 step 100%: alarm canary-5xx = OK
+18:24:56 step 100% passed
+18:28:40 ALB weights: stable=100 canary=0
+18:28:40 PROMOTED: tag 'good' is now stable; weights stable=100 canary=0

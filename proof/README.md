@@ -25,8 +25,19 @@ Written from the drill: [noisy-neighbour postmortem](../docs/postmortems/2026-11
 
 ## Phase 2: AWS (ap-southeast-2)
 
-Filled in by `scripts/deploy.sh` and `scripts/capture-proof.sh phase2`; see [phase2-cloud/](phase2-cloud/).
+| Artifact | What it proves |
+|---|---|
+| [logs/cdk-deploy.log](phase2-cloud/logs/cdk-deploy.log) | CDK bootstrap (project qualifier) and deploy of base, data and service stacks (redacted) |
+| [logs/init-db.log](phase2-cloud/logs/init-db.log) | One-off ECS task created DBs, roles and seed data on RDS |
+| [logs/canary-promote.log](phase2-cloud/logs/canary-promote.log) | Good tag promoted 10% → 50% → 100% with a 3-minute bake per step |
+| [logs/canary-rollback.log](phase2-cloud/logs/canary-rollback.log) | `FAULT=500` tag: alarm `canary-5xx` fires, `ROLLBACK`, weights back to 100/0 |
+| [logs/xray-trace-summary.json](phase2-cloud/logs/xray-trace-summary.json) | X-Ray received traces through the ADOT sidecar |
+| [resources.txt](phase2-cloud/resources.txt) | Deployed resources |
+| [tests/cloud-contract/](phase2-cloud/tests/cloud-contract/junit.xml) | The 12 contract tests run against the ALB URL |
+| [screenshots/01-cloud-console.png](phase2-cloud/screenshots/01-cloud-console.png) | Console on the ALB streaming rows from RDS |
+| [screenshots/02-cloudwatch-latency.png](phase2-cloud/screenshots/02-cloudwatch-latency.png) | CloudWatch p95 latency by track |
+| [screenshots/03-cloudwatch-5xx-during-rollback.png](phase2-cloud/screenshots/03-cloudwatch-5xx-during-rollback.png) | 5xx spike on the canary track that triggered the rollback |
 
 ## Phase 3: destroy
 
-[phase3-destroy/verify-destroyed.txt](phase3-destroy/verify-destroyed.txt) shows nothing billable left.
+[phase3-destroy/destroy.log](phase3-destroy/destroy.log) and [phase3-destroy/verify-destroyed.txt](phase3-destroy/verify-destroyed.txt): everything deleted, nothing billable left; the KMS key is in PendingDeletion (7-day minimum window).

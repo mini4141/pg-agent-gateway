@@ -1,0 +1,142 @@
+[
+    {
+        "Id": "1-a66a1f52-47d4c2b7a0975c829c13bef6",
+        "Duration": 0.006,
+        "ResponseTime": 0.006,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-12153cc4-d281d0ef4a3147156c1e6be9",
+        "Duration": 0.006,
+        "ResponseTime": 0.005,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-9e4d377c-1959d6f7953662245ccedda1",
+        "Duration": 0.012,
+        "ResponseTime": 0.012,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-54e9a2a3-1b412a08c383a7182a5987e5",
+        "Duration": 0.025,
+        "ResponseTime": 0.025,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-01d60410-c9ee74997b2bd566314b9507",
+        "Duration": 0.006,
+        "ResponseTime": 0.006,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-08e49643-a0b2f3d820eca711a35c4446",
+        "Duration": 0.007,
+        "ResponseTime": 0.007,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-eae53310-59c07ab9125dc342337bf2f1",
+        "Duration": 0.006,
+        "ResponseTime": 0.006,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-58ce6e0b-af4fd1839ac9b6da2976e639",
+        "Duration": 0.015,
+        "ResponseTime": 0.015,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-9e0f029b-a0717123470e00f244fa0147",
+        "Duration": 0.007,
+        "ResponseTime": 0.007,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-09c63c3c-dbc36d5518e32595a067a2c6",
+        "Duration": 0.0,
+        "ResponseTime": 0.0,
+        "Http": null,
+        "Status": 500
+    },
+    {
+        "Id": "1-14f39faa-215e61f06b952abca0decdd4",
+        "Duration": 0.007,
+        "ResponseTime": 0.007,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-383590b9-aefece1c1eba4f1062e4e1a5",
+        "Duration": 0.007,
+        "ResponseTime": 0.007,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-93697760-4d5f3420d360e61a36cdbb51",
+        "Duration": 0.006,
+        "ResponseTime": 0.006,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-a96af6a9-e914a0d6b5667beadbbdc50f",
+        "Duration": 0.007,
+        "ResponseTime": 0.007,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-2c68a2a1-e29bdba60d4871872d536785",
+        "Duration": 0.006,
+        "ResponseTime": 0.006,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-d4098dd4-b2544f63a057118c594d0096",
+        "Duration": 0.077,
+        "ResponseTime": 0.077,
+        "Http": null,
+        "Status": 429
+    },
+    {
+        "Id": "1-fae3e534-28405b5fc890b6348db6c2da",
+        "Duration": 0.006,
+        "ResponseTime": 0.006,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-581c7e63-2452f6d923918abf7d34d4f5",
+        "Duration": 0.08,
+        "ResponseTime": 0.08,
+        "Http": null,
+        "Status": 429
+    },
+    {
+        "Id": "1-4bd36b8a-c60b471730d6877a2a7547b9",
+        "Duration": 0.018,
+        "ResponseTime": 0.018,
+        "Http": null,
+        "Status": 200
+    },
+    {
+        "Id": "1-c06aa50e-d5f191c14ab5b2be5b984d89",
+        "Duration": 0.0,
+        "ResponseTime": 0.0,
+        "Http": null,
+        "Status": 200
+    }
+]

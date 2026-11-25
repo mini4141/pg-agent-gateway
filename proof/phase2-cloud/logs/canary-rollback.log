@@ -1,0 +1,12 @@
+18:28:44 canary rollout of tag 'bad' started (bake 180s per step)
+18:28:56 canary service updated to bad; waiting for it to become stable
+18:32:40 canary healthy
+18:32:51 ALB weights: stable=90 canary=10
+18:33:09 step 10%: alarm canary-5xx = OK
+18:33:27 step 10%: alarm canary-5xx = OK
+18:33:45 step 10%: alarm canary-5xx = OK
+18:34:03 step 10%: alarm canary-5xx = OK
+18:34:21 step 10%: alarm canary-5xx = OK
+18:34:40 step 10%: alarm canary-5xx = ALARM
+18:34:54 ALB weights: stable=100 canary=0
+18:35:01 ROLLBACK: alarm canary-5xx fired while rolling out tag 'bad' at 10%; weights restored to stable=100 canary=0, canary service reverted to the stable task definition

@@ -1,0 +1,33 @@
+verify-destroyed 2026-11-25T18:48:17Z  region=ap-southeast-2
+arn:aws:iam::<ACCOUNT_ID>:user/pg-agent-gateway-deployer
+PASS  ECS clusters named pgagw
+PASS  load balancers (project tag or name)
+PASS  target groups
+PASS  RDS instances
+PASS  Secrets Manager secrets (pgagw*, rds db secret, branch secrets)
+PASS  VPCs tagged Project=pg-agent-gateway
+PASS  NAT gateways
+PASS  Elastic IPs
+PASS  ECR repositories
+PASS  CloudFormation stacks (Pgagw*, CDKToolkit-pg-agent-gateway)
+PASS  S3 buckets (cdk-pgagw-*)
+PASS  CloudWatch log groups /pgagw/*
+PASS  CloudWatch alarm canary-5xx
+PASS  CloudWatch dashboards
+INFO  KMS key ebfaacc2-bd26-420e-acb6-5e49a02c74f2 state=PendingDeletion
+PASS  KMS keys not in PendingDeletion
+--- tagging API view (informational: can lag a few minutes after deletion)
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:cluster/pgagw
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:service/pgagw/redis
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-canary:1
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/PgagwServiceRedisTd755894CF:2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-stable:2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-init-db:1
+arn:aws:kms:ap-southeast-2:<ACCOUNT_ID>:key/ebfaacc2-bd26-420e-acb6-5e49a02c74f2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-canary:2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-init-db:2
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:service/pgagw/gateway-canary
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:service/pgagw/gateway-stable
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/PgagwServiceRedisTd755894CF:1
+arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task-definition/gateway-stable:1
+RESULT: nothing billable remains
