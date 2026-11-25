@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="2.1248915">
+    <testsuite name="contract/contract.test.ts" timestamp="2026-11-25T08:39:43.072Z" hostname="DESKTOP-LSTSC86" tests="12" failures="0" errors="0" skipped="0" time="2.1248915">
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; transactions: BEGIN ... COMMIT in one request is committed" time="0.2896564">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; multi-statement: last result by default, all with ?multi=all" time="0.0346706">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; timeout: 408 STATEMENT_TIMEOUT and the query is cancelled server-side" time="0.5506123">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; truncation: truncated=true past maxRows" time="0.0382215">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; streaming: NDJSON rows then a _meta trailer" time="0.0667417">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; read-only agents: a write returns 403 READ_ONLY_VIOLATION" time="0.0363655">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; agent limits: maxRows is clamped to the agent hard limit" time="0.0403167">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; errors: SQL errors use the documented shape with a requestId" time="0.0152574">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; auth: missing key is 401, key for another tenant is 403" time="0.0107539">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; rate limit: a burst beyond the tenant limit gets 429 with Retry-After" time="0.9961783">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; branch config: round trip, platform-worker only" time="0.0276183">
+        </testcase>
+        <testcase classname="contract/contract.test.ts" name="CONTRACT.md &gt; readiness and OpenAPI: /readyz is ready, /docs/json is OpenAPI 3.1" time="0.0092058">
+        </testcase>
+    </testsuite>
+</testsuites>

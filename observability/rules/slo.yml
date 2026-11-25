@@ -6,15 +6,15 @@ groups:
       - record: gw:requests:rate1m
         expr: sum(rate(gw_requests_total[1m]))
       - record: gw:errors:rate1m
-        expr: sum(rate(gw_requests_total{code=~"5.."}[1m]))
+        expr: sum(rate(gw_requests_total{code=~"5.."}[1m])) or vector(0)
       - record: gw:error_ratio:rate5m
-        expr: sum(rate(gw_requests_total{code=~"5.."}[5m])) / sum(rate(gw_requests_total[5m]))
+        expr: (sum(rate(gw_requests_total{code=~"5.."}[5m])) or vector(0)) / sum(rate(gw_requests_total[5m]))
       - record: gw:error_ratio:rate30m
-        expr: sum(rate(gw_requests_total{code=~"5.."}[30m])) / sum(rate(gw_requests_total[30m]))
+        expr: (sum(rate(gw_requests_total{code=~"5.."}[30m])) or vector(0)) / sum(rate(gw_requests_total[30m]))
       - record: gw:error_ratio:rate1h
-        expr: sum(rate(gw_requests_total{code=~"5.."}[1h])) / sum(rate(gw_requests_total[1h]))
+        expr: (sum(rate(gw_requests_total{code=~"5.."}[1h])) or vector(0)) / sum(rate(gw_requests_total[1h]))
       - record: gw:error_ratio:rate6h
-        expr: sum(rate(gw_requests_total{code=~"5.."}[6h])) / sum(rate(gw_requests_total[6h]))
+        expr: (sum(rate(gw_requests_total{code=~"5.."}[6h])) or vector(0)) / sum(rate(gw_requests_total[6h]))
       - record: tenant:gw_latency_p95:5m
         expr: histogram_quantile(0.95, sum by (tenant, le) (rate(gw_request_duration_seconds_bucket[5m])))
       - record: gw:console_latency_p95:5m

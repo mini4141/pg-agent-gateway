@@ -1,0 +1,83 @@
+tools: list_tables, describe_table, run_sql
+
+== list_tables(tenant_a)
+[
+ {
+  "table_name": "customers",
+  "table_type": "BASE TABLE"
+ },
+ {
+  "table_name": "orders",
+  "table_type": "BASE TABLE"
+ },
+ {
+  "table_name": "products",
+  "table_type": "BASE TABLE"
+ }
+]
+
+== describe_table(tenant_a, orders)
+[
+ {
+  "column_name": "id",
+  "data_type": "integer",
+  "is_nullable": "NO"
+ },
+ {
+  "column_name": "customer_id",
+  "data_type": "integer",
+  "is_nullable": "NO"
+ },
+ {
+  "column_name": "product_id",
+  "data_type": "integer",
+  "is_nullable": "NO"
+ },
+ {
+  "column_name": "quantity",
+  "data_type": "integer",
+  "is_nullable": "NO"
+ },
+ {
+  "column_name": "total",
+  "data_type": "numeric",
+  "is_nullable": "NO"
+ },
+ {
+  "column_name": "status",
+  "data_type": "text",
+  "is_nullable": "NO"
+ },
+ {
+  "column_name": "created_at",
+  "data_type": "timestamp with time zone",
+  "is_nullable": "NO"
+ }
+]
+
+== run_sql(tenant_b, revenue by status)
+[
+ {
+  "status": "new",
+  "orders": 8311,
+  "revenue": "6337371.11"
+ },
+ {
+  "status": "paid",
+  "orders": 16515,
+  "revenue": "12408208.58"
+ },
+ {
+  "status": "refunded",
+  "orders": 8334,
+  "revenue": "6321567.22"
+ },
+ {
+  "status": "shipped",
+  "orders": 16840,
+  "revenue": "12751770.82"
+ }
+]
+
+== run_sql write attempt (must be refused)
+403 READ_ONLY_VIOLATION: this caller is read-only

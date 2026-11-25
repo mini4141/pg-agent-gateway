@@ -1,0 +1,10 @@
+{"level":30,"time":1795628447953,"pid":1,"hostname":"cc22a5785a3d","reqId":"ac6f3a9c-15df-4b11-80b5-66f258b80f2f","tenant":"tenant_a","backendPid":312,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628447953,"pid":1,"hostname":"cc22a5785a3d","reqId":"5b726f05-67b6-464f-a394-36f1ca242ca8","tenant":"tenant_a","backendPid":311,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628447954,"pid":1,"hostname":"cc22a5785a3d","reqId":"53745df4-521c-4d7f-8233-5dede5481871","tenant":"tenant_a","backendPid":310,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628447954,"pid":1,"hostname":"cc22a5785a3d","reqId":"430799f4-76c0-4a83-b8f2-1a47fd8c84f8","tenant":"tenant_a","backendPid":313,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628447954,"pid":1,"hostname":"cc22a5785a3d","reqId":"bddfb8f8-6c7c-4ba0-9a7d-54a02febfcb3","tenant":"tenant_a","backendPid":242,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628452007,"pid":1,"hostname":"cc22a5785a3d","reqId":"7c24ae2d-52a6-4d25-8a5c-d58fe7268f52","tenant":"tenant_a","backendPid":312,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628452008,"pid":1,"hostname":"cc22a5785a3d","reqId":"2668aaf8-eeeb-4a5a-8e1b-b5ed9c39632d","tenant":"tenant_a","backendPid":311,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628452008,"pid":1,"hostname":"cc22a5785a3d","reqId":"ccd96727-6548-48be-a29d-3523684030d8","tenant":"tenant_a","backendPid":310,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628452009,"pid":1,"hostname":"cc22a5785a3d","reqId":"5e39b6d8-acac-4e5c-8834-71ce49b059a6","tenant":"tenant_a","backendPid":242,"reason":"client_disconnect","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628452009,"pid":1,"hostname":"cc22a5785a3d","reqId":"73e19f50-b5c0-4612-99ea-997a747fa336","tenant":"tenant_a","backendPid":313,"reason":"client_disconnect","msg":"pg_cancel_backend"}

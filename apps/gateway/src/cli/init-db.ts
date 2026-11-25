@@ -12,9 +12,12 @@ import { seal } from '../secrets/crypto.js';
 const env = process.env;
 const need = (n: string) => env[n] ?? (() => { throw new Error(`${n} is required`); })();
 
-const adminUrl = need('ADMIN_DATABASE_URL'); // admin user, `postgres` database
 const dbHost = env.DB_HOST ?? 'postgres'; // host the gateway uses to reach tenant DBs
 const dbPort = Number(env.DB_PORT ?? 5432);
+// Admin connection (superuser locally, rds_superuser on AWS), `postgres` database.
+const adminUrl =
+  env.ADMIN_DATABASE_URL ??
+  `postgres://${encodeURIComponent(need('ADMIN_DB_USER'))}:${encodeURIComponent(need('ADMIN_DB_PASSWORD'))}@${dbHost}:${dbPort}/postgres`;
 const controlPassword = need('CONTROL_DB_PASSWORD');
 const keyPrefix = env.SEED_KEY_PREFIX ?? 'dev';
 const sqlDir = env.DB_SQL_DIR ?? 'db';

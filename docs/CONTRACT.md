@@ -57,4 +57,4 @@ Streaming requests default `maxRows` to the hard limit.
 
 ## SLOs
 
-Availability 99.5%: every `5xx` is bad, `429` is not (it is the intended shedding). Latency: p95 under 300 ms for `console` callers.
+Availability 99.5%: every `5xx` is bad, `429` is not (it is the intended shedding). Latency: p95 under 300 ms for `console` callers; for streamed responses latency is measured to the first row.

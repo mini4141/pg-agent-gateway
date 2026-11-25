@@ -9,7 +9,8 @@ if [ ! -f .local/dev-master.key ]; then
   echo "generated .local/dev-master.key"
 fi
 
-docker compose up -d --build
+# SERVICES narrows the stack (CI uses: postgres redis gateway); default is everything.
+docker compose up -d --build ${SERVICES:-}
 scripts/seed.sh
 
 echo "waiting for gateway readiness..."

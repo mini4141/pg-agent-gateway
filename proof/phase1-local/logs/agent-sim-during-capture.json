@@ -1,10 +1,10 @@
 {
-  "startedAt": "2026-11-25T07:54:56.488Z",
+  "startedAt": "2026-11-25T17:40:56.074Z",
   "options": {
     "url": "http://gateway:8080",
-    "duration": "12s",
+    "duration": "40s",
     "background-tenant": "tenant_b",
-    "out": "/proof/phase1-local/tests/x.json",
+    "out": "/proof/phase1-local/logs/agent-sim-during-capture.json",
     "prefix": "dev",
     "tenant": "tenant_a",
     "rps": "300",
@@ -12,44 +12,43 @@
     "background-rps": "20",
     "assert": false,
     "p95-slo-ms": "300",
-    "durationSeconds": 12
+    "durationSeconds": 40
   },
   "noisy": {
     "tenant": "tenant_a",
-    "requests": 3754,
+    "requests": 12700,
     "status": {
-      "200": 385,
-      "429": 3362,
-      "503": 7
+      "200": 833,
+      "429": 11867
     },
-    "ok": 385,
-    "throttled": 3369,
+    "ok": 833,
+    "throttled": 11867,
     "errorRate": 0,
     "latencyMs": {
-      "p50": 142.422746,
-      "p95": 583.387806,
-      "p99": 1965.787684
+      "p50": 8.92857,
+      "p95": 50.216439,
+      "p99": 102.250849
     }
   },
   "quiet": {
     "tenant": "tenant_b",
-    "requests": 173,
+    "requests": 800,
     "status": {
-      "200": 173
+      "200": 800
     },
-    "ok": 173,
+    "ok": 800,
     "throttled": 0,
     "errorRate": 0,
     "latencyMs": {
-      "p50": 138.421929,
-      "p95": 2829.682458,
-      "p99": 2955.968609
+      "p50": 17.231865,
+      "p95": 41.429532,
+      "p99": 55.31718
     }
   },
   "sloP95Ms": 300,
   "checks": {
     "noisyTenantThrottled": true,
-    "quietTenantP95UnderSlo": false,
+    "quietTenantP95UnderSlo": true,
     "quietTenantErrorsUnder1Pct": true
   }
 }

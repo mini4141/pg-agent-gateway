@@ -1,0 +1,8 @@
+# request: select pg_sleep(10) with timeoutMs=500 as a console caller on tenant_a
+{"error":{"code":"STATEMENT_TIMEOUT","message":"statement exceeded its timeout and was cancelled","requestId":"a33007e4-5f01-4217-bf26-682716ce08c4","sqlState":"57014"}}
+HTTP 408
+# gateway log lines for that request:
+{"level":30,"time":1795628345306,"pid":1,"hostname":"cc22a5785a3d","reqId":"a33007e4-5f01-4217-bf26-682716ce08c4","tenant":"tenant_a","backendPid":216,"reason":"timeout","msg":"pg_cancel_backend"}
+{"level":30,"time":1795628345328,"pid":1,"hostname":"cc22a5785a3d","reqId":"a33007e4-5f01-4217-bf26-682716ce08c4","tenant":"tenant_a","callerType":"console","statusCode":408,"durationMs":556,"msg":"request"}
+# metric:
+gw_cancelled_queries_total{tenant="tenant_a",reason="timeout"} 1

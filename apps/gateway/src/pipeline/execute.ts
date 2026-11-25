@@ -131,9 +131,8 @@ async function checkout(run: Run) {
     client.release(broken);
   };
   const begin = async () => {
-    await client.query(run.mode === 'ro' ? 'BEGIN READ ONLY' : 'BEGIN');
-    // Backstop only: the watchdog above cancels at timeoutMs via pg_cancel_backend.
-    await client.query(`SET LOCAL statement_timeout = ${timeoutMs + 2000}`);
+    // One round trip. SET LOCAL is a backstop only: the watchdog above cancels at timeoutMs via pg_cancel_backend.
+    await client.query(`${run.mode === 'ro' ? 'BEGIN READ ONLY' : 'BEGIN'}; SET LOCAL statement_timeout = ${timeoutMs + 2000}`);
   };
   return { client, state, begin, finish, tag };
 }
@@ -218,6 +217,7 @@ async function streamQuery(run: Run, release: () => Promise<void>) {
   const it = lines();
   // Peek the first line so SQL errors and timeouts surface as a real HTTP status instead of a broken stream.
   const first = await span(req.ctx.span, 'query', () => it.next());
+  req.ctx.latencyMs = reply.elapsedTime; // streams are measured to the first row, not to the last
   async function* chained() {
     if (!first.done) yield first.value;
     yield* it;

@@ -22,6 +22,7 @@ interface Ctx {
   span: Span;
   tracked: boolean;
   admitted?: { caller: Caller; tenant: Tenant };
+  latencyMs?: number; // set early for streamed responses (time to first row)
 }
 declare module 'fastify' {
   interface FastifyRequest {
@@ -94,7 +95,7 @@ export async function buildServer() {
     req.ctx.span.end();
     if (!req.ctx.tracked) return;
     const { tenant, callerType } = req.ctx;
-    const ms = reply.elapsedTime;
+    const ms = req.ctx.latencyMs ?? reply.elapsedTime;
     requestsTotal.inc({ tenant, caller_type: callerType, code: String(reply.statusCode) });
     requestDuration.observe({ tenant, caller_type: callerType }, ms / 1000);
     record(tenant, ms, reply.statusCode);

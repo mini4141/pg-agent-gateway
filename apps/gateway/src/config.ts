@@ -3,7 +3,10 @@ const int = (name: string, def: number) => (env[name] ? Number(env[name]) : def)
 
 export const config = {
   port: int('PORT', 8080),
-  controlDatabaseUrl: env.CONTROL_DATABASE_URL ?? 'postgres://gateway:control-dev-only@localhost:5432/control',
+  // On AWS the URL is assembled from DB_HOST + the Secrets Manager password injected as CONTROL_DB_PASSWORD.
+  controlDatabaseUrl:
+    env.CONTROL_DATABASE_URL ??
+    `postgres://gateway:${encodeURIComponent(env.CONTROL_DB_PASSWORD ?? 'control-dev-only')}@${env.DB_HOST ?? 'localhost'}:${env.DB_PORT ?? 5432}/control`,
   redisUrl: env.REDIS_URL ?? 'redis://localhost:6379',
   secretsBackend: (env.SECRETS_BACKEND ?? 'local') as 'local' | 'aws',
   masterKeyFile: env.MASTER_KEY_FILE ?? '.local/dev-master.key',

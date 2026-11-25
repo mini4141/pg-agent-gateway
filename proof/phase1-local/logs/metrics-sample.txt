@@ -1,0 +1,14 @@
+gw_cancelled_queries_total{tenant="tenant_a",reason="client_disconnect"} 81
+gw_cancelled_queries_total{tenant="tenant_a",reason="timeout"} 1
+gw_cancelled_queries_total{tenant="tenant_b",reason="client_disconnect"} 3
+gw_ratelimited_total{tenant="tenant_a",caller_type="agent",stage="semaphore"} 1740
+gw_ratelimited_total{tenant="tenant_a",caller_type="agent",stage="token_bucket"} 19516
+gw_requests_total{tenant="tenant_a",caller_type="agent",code="200"} 1549
+gw_requests_total{tenant="tenant_a",caller_type="agent",code="429"} 21026
+gw_requests_total{tenant="tenant_a",caller_type="console",code="200"} 1
+gw_requests_total{tenant="tenant_a",caller_type="console",code="408"} 1
+gw_requests_total{tenant="tenant_a",caller_type="mcp",code="200"} 2
+gw_requests_total{tenant="tenant_b",caller_type="agent",code="200"} 1400
+gw_requests_total{tenant="tenant_b",caller_type="mcp",code="200"} 1
+gw_requests_total{tenant="tenant_b",caller_type="mcp",code="403"} 1
+gw_requests_total{tenant="unknown",caller_type="unknown",code="200"} 2

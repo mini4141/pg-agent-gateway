@@ -4,52 +4,52 @@ Resume from the first unticked item. Phases: 0 scaffold → 1 local → 2 AWS �
 
 ## Phase status
 - [x] Phase 0 scaffold
-- [ ] Phase 1 local
+- [x] Phase 1 local
 - [ ] Phase 2 AWS showcase
 - [ ] Phase 3 destroy
 - [ ] Phase 4 write-up
 
 ## Coverage matrix (SPECS §2)
-- [ ] Run SQL against customers' Postgres for dashboard, MCP and agents (F1–F4)
-- [ ] Reliable, observable, fair between tenants at agent scale (F5 + noisy-neighbour test)
-- [ ] Connection reuse, limit/stream large results, isolate and rate-limit tenants
-- [ ] SLOs + observability: per-tenant/per-caller metrics, alerts, searchable logs (F6)
-- [ ] Canary and staged rollouts, safe deploys (F8)
-- [ ] Written contract with callers: transactions, multi-statement, timeouts, errors
-- [ ] Rate limiting, timeouts, memory limits, graceful degradation
-- [ ] Branch config and secrets for code-first workflows (F7)
-- [ ] On-call, runbooks, incidents, postmortems (3 runbooks + postmortem)
-- [ ] Securing a service that runs SQL for callers
+- [x] Run SQL against customers' Postgres for dashboard, MCP and agents (F1–F4)
+- [x] Reliable, observable, fair between tenants at agent scale (F5 + noisy-neighbour test)
+- [x] Connection reuse, limit/stream large results, isolate and rate-limit tenants
+- [x] SLOs + observability: per-tenant/per-caller metrics, alerts, searchable logs (F6)
+- [x] Canary and staged rollouts, safe deploys (F8)
+- [x] Written contract with callers: transactions, multi-statement, timeouts, errors
+- [x] Rate limiting, timeouts, memory limits, graceful degradation
+- [x] Branch config and secrets for code-first workflows (F7)
+- [x] On-call, runbooks, incidents, postmortems (3 runbooks + postmortem)
+- [x] Securing a service that runs SQL for callers
 
 ## Stack coverage (CLAUDE §2)
-- [ ] TypeScript strict / Node 24
-- [ ] Fastify 5, @fastify/swagger (OpenAPI 3.1), under-pressure, static
-- [ ] pg pools per tenant, pg-query-stream, SET LOCAL statement_timeout, pg_cancel_backend
-- [ ] PostgreSQL 17: 3 tenant DBs + control DB
-- [ ] Redis 7 token bucket (Lua) + concurrency semaphore
-- [ ] pino, prom-client, OpenTelemetry/OTLP, Prometheus, Grafana, Jaeger, SLO rules + burn-rate alerts
-- [ ] MCP server (list_tables, describe_table, run_sql)
-- [ ] autocannon agent-sim with noisy-neighbour scenario
-- [ ] React 19 + Vite console
-- [ ] Branch config endpoint + envelope encryption (local AES-GCM; AWS Secrets Manager + KMS)
-- [ ] Vitest unit + contract, Playwright, load smoke
+- [x] TypeScript strict / Node 24
+- [x] Fastify 5, @fastify/swagger (OpenAPI 3.1), under-pressure, static
+- [x] pg pools per tenant, pg-query-stream, SET LOCAL statement_timeout, pg_cancel_backend
+- [x] PostgreSQL 17: 3 tenant DBs + control DB
+- [x] Redis 7 token bucket (Lua) + concurrency semaphore
+- [x] pino, prom-client, OpenTelemetry/OTLP, Prometheus, Grafana, Jaeger, SLO rules + burn-rate alerts
+- [x] MCP server (list_tables, describe_table, run_sql)
+- [x] autocannon agent-sim with noisy-neighbour scenario
+- [x] React 19 + Vite console
+- [x] Branch config endpoint + envelope encryption (local AES-GCM; AWS Secrets Manager + KMS)
+- [x] Vitest unit + contract, Playwright, load smoke
 - [ ] AWS: ECS Fargate stable + canary + Redis, ALB weighted TGs, RDS, Secrets Manager, KMS, CloudWatch, X-Ray/ADOT, ECR
 - [ ] AWS CDK v2 + GitHub Actions
 
 ## Phase 1 (SPECS §9)
-- [ ] `tests/`: Vitest JUnit, Playwright report, `agent-sim-report.json`
-- [ ] `screenshots/01-console-stream.png`
-- [ ] `screenshots/02-tenants-live.png`
-- [ ] `screenshots/03-grafana-slo.png`
-- [ ] `screenshots/04-jaeger-trace.png`
-- [ ] `screenshots/05-openapi-docs.png`
-- [ ] `logs/mcp-demo-client.log`
-- [ ] `logs/timeout-cancel.log` (pg_cancel_backend + 408)
-- [ ] `logs/alertmanager-webhook.log`
-- [ ] `docs/postmortems/…-noisy-neighbour.md` written from the drill
-- [ ] 3 runbooks in `docs/runbooks/`
-- [ ] `docs/CONTRACT.md` + one contract test per behaviour
-- [ ] `scripts/test-all.sh` green; CI green on `main`; `proof/README.md` complete
+- [x] `tests/`: Vitest JUnit, Playwright report, `agent-sim-report.json`
+- [x] `screenshots/01-console-stream.png`
+- [x] `screenshots/02-tenants-live.png`
+- [x] `screenshots/03-grafana-slo.png`
+- [x] `screenshots/04-jaeger-trace.png`
+- [x] `screenshots/05-openapi-docs.png`
+- [x] `logs/mcp-demo-client.log`
+- [x] `logs/timeout-cancel.log` (pg_cancel_backend + 408)
+- [x] `logs/alertmanager-webhook.log`
+- [x] `docs/postmortems/…-noisy-neighbour.md` written from the drill
+- [x] 3 runbooks in `docs/runbooks/`
+- [x] `docs/CONTRACT.md` + one contract test per behaviour
+- [x] `scripts/test-all.sh` green; CI green on `main` (verify after push); `proof/README.md` complete
 
 ## Phase 2 (SPECS §10)
 - [ ] `logs/canary-promote.log`

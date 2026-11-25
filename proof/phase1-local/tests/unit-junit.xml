@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="0" errors="0" time="2.0646549">
+    <testsuite name="test/errors.test.ts" timestamp="2026-11-25T08:39:37.534Z" hostname="DESKTOP-LSTSC86" tests="2" failures="0" errors="0" skipped="0" time="0.0133301">
+        <testcase classname="test/errors.test.ts" name="contract error serializer &gt; renders the documented error shape" time="0.005232">
+        </testcase>
+        <testcase classname="test/errors.test.ts" name="contract error serializer &gt; maps postgres errors to contract codes" time="0.0036667">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/limiter.test.ts" timestamp="2026-11-25T08:39:37.538Z" hostname="DESKTOP-LSTSC86" tests="2" failures="0" errors="0" skipped="0" time="2.0513248">
+        <testcase classname="test/limiter.test.ts" name="token bucket (Redis Lua) &gt; allows N requests, then denies with a retry hint" time="0.03216">
+        </testcase>
+        <testcase classname="test/limiter.test.ts" name="tenant semaphore (Redis) &gt; grants up to the limit and frees a slot on release" time="2.0103793">
+        </testcase>
+    </testsuite>
+</testsuites>

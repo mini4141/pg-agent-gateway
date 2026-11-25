@@ -1,0 +1,7 @@
+{
+  "app": "npx tsx bin/app.ts",
+  "toolkitStackName": "CDKToolkit-pg-agent-gateway",
+  "context": {
+    "@aws-cdk/core:bootstrapQualifier": "pgagw"
+  }
+}
